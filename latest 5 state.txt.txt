@@ -1,0 +1,73 @@
+================================================================================
+HS MUSIC EVENT ECOSYSTEM — SYSTEM STATE AUDIT (state.txt)
+DATE & TIME: 2026-09-16 01:05:14 IST | NODE: Prayagraj, UP, India
+AUTHORITY HIERARCHY: 00_MASTER_CONTROL -> STEP_07/09/10/11/14/18
+================================================================================
+
+1. SYSTEM ARCHITECTURE & CORE PHILOSOPHY
+--------------------------------------------------------------------------------
+- Product Vision: Complete Event & Entertainment Operating System (Not just artist booking).
+- Core Topology: ONE EVENT -> MULTIPLE SERVICES -> MULTIPLE PROVIDERS -> MULTIPLE BOOKINGS.
+- Financial Engine: BigInt Paisa Math (INR * 100), Zero Floating-Point Drift, Statutory Deductions (1% TDS Sec 194-O, 18% GST).
+- Concurrency Engine: Bifurcated (GiST tstzrange Pessimistic for single slots | OCC Ledger with FILLFACTOR=70 for pooled ticketing).
+- Client Design: "Apple Again" (Minimalism, Base-8 Spacing, 48x48dp Touch Targets, WCAG AA >= 4.5:1).
+- Offline Engine: SQLite + Ed25519 Cryptographic QR Signatures + LWW CRDT conflict queues.
+
+2. CURRENT MIGRATION & DATABASE STATUS (STEP_18 AUDIT)
+--------------------------------------------------------------------------------
+[x] MIG-TARGET-001 (Extensions & Infra):
+    - Extensions Active: postgis, pgvector, btree_gist, pg_cron, uuid-ossp.
+    - Safety: Role lock_timeout = '2s' enforced.
+
+[x] MIG-TARGET-002 (Provider Identity Decoupling):
+    - Tables: public.provider_memberships (user_id, provider_id, role enum: owner/manager/staff).
+    - Status: 4 initial provider records backfilled.
+    - PostGIS: providers.location_geom geography(POINT, 4326) + Spatial GiST index.
+    - Auth Hook: trg_sync_provider_memberships_jwt() syncs provider_ids array to raw_app_meta_data.
+
+[x] MIG-TARGET-004 & MIG-TARGET-005 (Financial Ledgers & Concurrency):
+    - Ledgers Active: public.idempotency_keys (72h TTL), public.escrow_ledgers (Double-entry balance split), public.service_inventory (Pooled OCC), public.payments.
+    - Polymorphic XOR Guard: CHECK ((event_package_id IS NOT NULL) ^ (booking_id IS NOT NULL)) active on payments.
+    - Schema Bridge Resolved: bookings.provider_id, client_id, event_package_id, updated_at, and operational_window (native tstzrange) physically provisioned and indexed.
+    - GiST Lock: excl_provider_booking_gist active on single-capacity slots.
+
+[x] MIG-TARGET-006 & MIG-TARGET-007 (Reviews, AI Vectors & Telemetry):
+    - Reviews: public.reviews + trg_prevent_review_abuse (Blocks non-completed booking reviews).
+    - Materialized View: public.mv_provider_scores active with unique index.
+    - Vector Embeddings: public.provider_embeddings (1536 dims) + HNSW cosine distance index (idx_provider_embeddings_hnsw USING hnsw (embedding vector_cosine_ops)).
+    - Telemetry: public.ai_usage_ledger active.
+
+[x] MIG-TARGET-008 & MIG-TARGET-009 (Ticketing, CRDT & Push Routing):
+    - Tables: public.tickets (Ed25519 hash anchor), public.ticket_scans (LWW CRDT queue), public.sync_discrepancy_logs, public.event_staff_assignments, public.device_tokens.
+    - Trigger: trg_cascade_ticket_cancellation auto-voids tickets on parent booking cancellation.
+
+[x] MIG-TARGET-010 (Zero-Trust Security & Row-Level Security Matrix):
+    - RLS Active: All 20 canonical tables set to rowsecurity = true.
+    - Type-Casting Bug Fixed: Explicit text-level comparisons (::text = ::text) deployed across polymorphic subqueries.
+    - Access Boundaries:
+      * Clients restricted to own rows via auth.uid().
+      * Providers bound via O(1) JWT app_metadata -> provider_ids array checks.
+      * Gate staff scoped strictly via event_staff_assignments.
+      * Blackout tables (idempotency_keys, sync_discrepancy_logs) completely unexposed to anon/authenticated.
+    - Column-Level Security (CLS): REVOKE UPDATE on base_quote_paisa, platform_fee_paisa, gst_paisa, tds_paisa, total_amount_paisa on bookings from authenticated.
+
+3. RISK & DEFECT REGISTRY SUMMARY (STEP_21 AUDIT)
+--------------------------------------------------------------------------------
+- ISS-P0-01 (DB Fragmentation): RESOLVED via canonical migrations.
+- ISS-P0-02 (Unsafe Bookings RLS): RESOLVED via MIG-TARGET-010.
+- ISS-P0-03 (Identity Split): RESOLVED via provider_memberships.
+- ISS-P0-04 (Text Dates Concurrency): RESOLVED via native tstzrange GiST exclusion.
+- ISS-P0-06 (Edge JWT Impersonation): ENFORCED in architecture design.
+- ISS-P1-05 (Idempotency 72h TTL): RESOLVED in schema.
+- ISS-P2-06 (SRID Miscalculation): RESOLVED via geography(POINT, 4326).
+
+4. NEXT IMMEDIATE TARGET (PHASE 6: EDGE FUNCTIONS & FINANCIAL APIs)
+--------------------------------------------------------------------------------
+Canonical Roadmap Step: Implementation Plan Phase 5 / Phase 13 (STEP_08, STEP_11, STEP_17)
+Pending Deployments:
+1. calculate-quote Edge Function (Authoritative BigInt Paisa Math, 18% GST, 1% TDS, Platform Fee calculation).
+2. payment-webhook Edge Function (HMAC SHA-256 validation, 72h Idempotency, Distributed Saga Compensation on Partial Failures).
+3. escrow-release Edge Function / RPC (Atomic Burn-on-Read Job Completion OTP).
+
+STATUS: DATABASE LAYER COMPLETE & SECURE | READY FOR EDGE FUNCTIONS
+================================================================================

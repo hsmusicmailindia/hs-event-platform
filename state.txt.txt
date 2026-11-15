@@ -1,0 +1,104 @@
+================================================================================
+HS MUSIC EVENT ECOSYSTEM — SYSTEM STATE RECORD
+DOCUMENT: state.txt
+TIMESTAMP: 2026-09-09T11:33:15+05:30 (Prayagraj, India)
+STATUS: ACTIVE MIGRATION & SAGA INTEGRATION (PHASE 9 BOUNDARY)
+AUTHORITY: 00_MASTER_CONTROL_FILE (v1.0), STEP_09 (v34.0.0), STEP_22 (v5.0.0)
+================================================================================
+
+[1] SYSTEM HEALTH & COMPLETION SNAPSHOT
+--------------------------------------------------------------------------------
+Overall Health:        ACTIVE / GATED PROGRESSION
+Architecture Baseline: 100% Locked (Steps 01 to 23 Canonical Specs Ratified)
+Database Engine State: Concurrency Engine Physically Enforced & RLS Hardened
+Active Phase:          Phase 9: Cart Sagas, Pre-Gateway Holds & Delta Payments
+
+[=====================================================>---------] 87% Completed
+- Documentation & Architecture Baseline: [████████████████████] 100% Locked
+- Database Foundations (Extensions/RLS): [████████████████████] 100% Live
+- Booking Concurrency & GiST Locks:      [████████████████████] 100% Verified
+- Authoritative RPC Engine (Option A):   [████████████████████] 100% Deployed
+- Client Presentation & Cart (Option B): [██████████████████░░]  90% Live Bound
+- Gateway Webhooks & Sagas:              [████████████░░░░░░░░]  60% Pending Hook
+
+--------------------------------------------------------------------------------
+[2] COMPLETED & PHYSICALLY VERIFIED WORK (LIVE AUDIT)
+--------------------------------------------------------------------------------
+
+A. DATABASE ENGINE & EXTENSIONS (MIG-TARGET-001)
+- Activated Extensions:
+  * uuid-ossp (UUID generation)
+  * btree_gist (Multi-column GiST indexing)
+  * postgis (SRID 4326 geospatial clustering & queries)
+  * pgvector (1536-dim HNSW embeddings)
+  * pg_cron (Scheduled sweeps & escrow TTLs)
+- Enum Normalization:
+  * Resolved MIG-INCIDENT-01 enum conflict (payment_status normalized).
+
+B. IDENTITY & GEOSPATIAL STORAGE (MIG-TARGET-002, 003)
+- Identity Decoupling:
+  * Created public.provider_memberships table (auth.users.id decoupled from public.providers.id).
+  * Enforced RBAC tiers: owner, manager, staff.
+- Geospatial Layer:
+  * Created public.providers.location_geom with PostGIS geography(POINT, 4326).
+- Storage Security Bifurcation (ISS-P0-05 Closed):
+  * public.provider_assets: Public CDN cached, 500KB cap, WebP only.
+  * public.provider_kyc: Private bucket, 5MB cap, restricted via Storage RLS to auth.uid() and Admin.
+
+C. CONCURRENCY ENGINE & GIST LOCKING (MIG-TARGET-005 / ISS-P0-04)
+- Schema Extension on public.bookings:
+  * Columns added: start_time, end_time, time_range (tstzrange), locked_until (TIMESTAMPTZ).
+  * Auto-sync Trigger: trg_set_booking_time_range synchronizes date and operational time to Asia/Kolkata tstzrange on INSERT/UPDATE.
+- Exclusion Constraint Deployment:
+  * Cleared collision conflict for provider 449a9131-44c9-49a3-82f7-51e5c5a0637b by transitioning duplicate active attempt to 'cancelled'.
+  * Successfully mounted constraint:
+    "exclude_provider_double_booking" EXCLUDE USING gist (provider_id WITH =, time_range WITH &&)
+    WHERE (status NOT IN ('cancelled', 'expired', 'rejected')) [contype: x verified live].
+
+D. ZERO-TRUST SECURITY & RLS LOCKDOWN (MIG-TARGET-010 / ISS-P0-02)
+- Dropped all legacy permissive policies exposing {public} / anon roles.
+- Enforced strict tenant-isolated RLS on public.bookings:
+  * p_bookings_client_select: authenticated only (client_id = auth.uid()).
+  * p_bookings_client_insert: authenticated only (WITH CHECK client_id = auth.uid()).
+  * p_bookings_provider_select: authenticated only (mapped via provider_memberships).
+
+E. BACKEND AUTHORITATIVE RPCS (OPTION A COMPLETE)
+- rpc_calculate_cart_quote:
+  * Security: SECURITY DEFINER with search_path = public, pg_temp.
+  * Logic: Aggregates package_services in BigInt Paisa, calculates 5% platform fee and 18% statutory GST using Banker's Rounding (BPS).
+- rpc_acquire_cart_hold:
+  * Security: SECURITY DEFINER with search_path = public, pg_temp.
+  * Logic: Atomically inserts 15-minute soft-hold slots (locked_until = clock_timestamp() + INTERVAL '15 minutes') in status 'AWAITING_PAYMENT_HOLD'.
+  * Collision Handling: Traps exclusion_violation and re-raises 'ERR_GIST_COLLISION' (409 Conflict).
+
+F. FLUTTER CLIENT INTEGRATION (OPTION B DEPLOYED)
+- Directory Structure Created:
+  * client_app/lib/features/client/data/repositories/
+  * client_app/lib/features/client/presentation/controllers/
+- Repository & Controller:
+  * CartRepository: Dispatches live rpc_calculate_cart_quote and rpc_acquire_cart_hold.
+  * CartController: Manages hold countdown, hardware timestamp calculation, and GIST collision alerts.
+- Cart Screen:
+  * CartScreen: BME multi-vendor cart with live 15-minute countdown bar, BigInt integer Paisa division, clean UTF-8 Indian Rupee (₹) glyphs, and Nodal Escrow assurances.
+  * Static Analysis: Passed cleanly ('No issues found!').
+
+--------------------------------------------------------------------------------
+[3] CURRENT BLOCKERS & WORK-IN-PROGRESS
+--------------------------------------------------------------------------------
+- Realtime Gateway Binding:
+  * Client cart hold is live; next step is handling payment webhook processing (/functions/v1/payment-webhook) to shift AWAITING_PAYMENT_HOLD to CONFIRMED.
+- Provider Dashboard Approval Loop:
+  * Provider Console needs to ingest real-time hold notifications and enforce the 24h / 4h dynamic acceptance SLAs.
+
+--------------------------------------------------------------------------------
+[4] ARCHITECTURAL INVARIANTS CURRENTLY ENFORCED
+--------------------------------------------------------------------------------
+- ADR-002: Authenticated user (auth.users) != Provider business (public.providers).
+- ADR-003: Single-capacity slots strictly governed by PostgreSQL tstzrange GiST exclusion.
+- ADR-004: All financial calculations stripped from client; executed via integer Paisa BigInt RPCs.
+- ADR-011: DPDP Act soft-redaction protocol preserves immutable financial ledgers.
+- ADR-013: 15-minute soft-locks bounded by hardware clock_timestamp() and auto-expiring sweeps.
+
+================================================================================
+END OF STATE RECORD — HS EVENT ECOSYSTEM 2
+================================================================================

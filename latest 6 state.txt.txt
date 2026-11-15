@@ -1,0 +1,201 @@
+================================================================================
+HS MUSIC EVENT ECOSYSTEM — COMPLETE CANONICAL STATE AUDIT (state.txt)
+================================================================================
+Generated Date: 2026-09-17
+Current Time: 11:09:28 IST (Asia/Kolkata) | Node: Prayagraj, UP, India
+System Target: Complete Event & Entertainment Operating System
+Operating Topology: ONE EVENT -> MULTIPLE SERVICES -> MULTIPLE PROVIDERS -> MULTIPLE BOOKINGS
+Platform Maturity: Production-Hardened Engine & Active Smoke Test Verification (~99%)
+Authority Hierarchy: 00_MASTER_CONTROL -> STEP_03_PRD -> STEP_04_TRD -> STEP_07 ->
+                     STEP_09 -> STEP_10 -> STEP_11 -> STEP_12 -> STEP_13 -> STEP_14 ->
+                     STEP_15 -> STEP_16 -> STEP_17 -> STEP_18 -> STEP_20 -> STEP_23
+================================================================================
+
+--------------------------------------------------------------------------------
+1. PERMANENT SYSTEM GOVERNANCE & ARCHITECTURAL RULEBOOK (LOCKED)
+--------------------------------------------------------------------------------
+RULE 01: ZERO-CHOICE ARCHITECTURAL DIRECTIVE (NO OPTIONS TO USER)
+  - The Lead Architect directs all technical execution steps sequentially.
+  - No options, choices, or branching decisions shall be posed to the user.
+
+RULE 02: EXPLICIT SQL EXECUTION DIRECTIVE
+  - Every SQL script must declare its execution mode:
+    "RUN & ENABLE RLS" or "RUN WITHOUT RLS".
+
+RULE 03: PRE-FLIGHT FILE & DIFF CONFLICT AUDIT
+  - Before outputting code, verify if the target file already exists and inspect its contents.
+  - Determine whether the file requires surgical patching or complete replacement.
+
+RULE 04: OMNI-PHASE COMPLETE STATE LEDGER + EMBEDDED RULES
+  - Every generated state.txt must audit all phases from Phase 01 to the active phase.
+  - The complete operational rulebook must be embedded in every audit.
+
+RULE 05: "APPLE AGAIN" FRONTEND ERGONOMICS (v7.0.0)
+  - Strict base-8 spacing, WCAG AA contrast (>= 4.5:1), 48x48dp interactive touch targets,
+    and dynamic viewInsets keyboard occlusion handling.
+
+RULE 06: STRICT BIGINT PAISA PRECISION & FINANCIAL CONSERVATION
+  - All monetary columns are BIGINT Paisa (INR * 100). Zero floating-point math.
+  - Gross Inflow = Net Provider Payout + Platform Revenue + Statutory Taxes.
+  - 18% GST (1800 BPS) and 1% TDS Sec 194-O (100 BPS) calculated server-side.
+
+RULE 07: BIFURCATED CONCURRENCY ENGINE
+  - Single-capacity slots: PostgreSQL tstzrange GiST pessimistic exclusion constraints.
+  - Pooled capacity inventory: Ledger-based Optimistic Concurrency Control (FILLFACTOR = 70).
+
+RULE 08: ZERO-TRUST ROW-LEVEL SECURITY & CONTEXT IMPERSONATION
+  - All 20 canonical tables must maintain rowsecurity = true.
+  - User-facing Edge Functions must forward Client Bearer JWTs (no blind service_role bypasses).
+
+RULE 09: OFFLINE CRYPTOGRAPHIC GATE SECURITY
+  - SQLite local caching + Ed25519 QR signatures + LWW CRDT conflict queues.
+
+RULE 10: MANDATORY CODE REPLACEMENT & REFERENCE DISCLOSURE RULE
+  - Whenever code is provided to be run in the client app or backend modules, explicitly specify whether the **entire file** must be replaced or only a **specific part**.
+  - If only a part must be replaced, **always provide the exact starting and ending reference/context** for where the snippet goes.
+
+RULE 11: PRO MAX UI/UX, TASTE, MCP & SPATIAL DESIGN SPECIFICATION
+  - Implementation of UI/UX, layouts, and components must strictly incorporate:
+    * UI/UX Pro Max Skills & Advanced Aesthetic Principles
+    * Taste Skills & Micro-interactions
+    * 21 Dev MCP Workflows & Component Patterns
+    * Dynamic Glassmorphism / Neomorphism / Claymorphism / Skeuomorphism / Liquid Glass UI variants where contextually appropriate.
+    * Spatial UI Design paradigms.
+    * Advanced Navigation Architecture utilizing Magnetic Docks, Glass Capsule Docks, or Segmented Dynamic Bars.
+    * Apple Again minimal luxury aesthetic: Base-8 spacing, WCAG AA contrast, 48x48dp minimum touch targets, and dynamic keyboard insets.
+
+--------------------------------------------------------------------------------
+2. COMPREHENSIVE ROADMAP PROGRESSION AUDIT (PHASE 01 TO ACTIVE PHASE)
+--------------------------------------------------------------------------------
+
+[✔] PHASE 01: DEVOPS, INFRASTRUCTURE & CRYPTOGRAPHIC FOUNDATIONS
+    - Supabase PostgreSQL 15 active on project lfnmedfymmadqjnluqoy[cite: 1, 4].
+    - Extensions enabled: uuid-ossp, postgis (SRID 4326), pgvector (1536-dim), btree_gist, pg_cron[cite: 1, 3, 4].
+    - Database role lock_timeout = '2s' enforced against connection exhaustion[cite: 1, 4].
+    - Ed25519 keypair configured for offline-verifiable QR tickets[cite: 1, 3].
+
+[✔] PHASE 02: IDENTITY DECOUPLING & GEOSPATIAL STORAGE (MIG-TARGET-002/003)
+    - Identity Decoupling: public.provider_memberships active (auth.users decoupled from public.providers)[cite: 1, 2].
+    - RBAC Tiers: owner, manager, staff[cite: 1, 2].
+    - JWT Auth Hook: trg_sync_provider_memberships_jwt() syncs provider_ids to raw_app_meta_data[cite: 1, 2].
+    - Geospatial Engine: providers.location_geom (geography POINT, 4326) with GiST spatial indexing[cite: 1, 2, 4].
+    - Storage Topology: Bifurcated into public provider_portfolios (CDN WebP) and private provider_kyc[cite: 1, 4].
+
+[✔] PHASE 03: CONCURRENCY, REVIEWS & EMBEDDINGS (MIG-TARGET-005/006/007)
+    - Single-Capacity Pessimistic Lock: excl_provider_booking_gist active on public.bookings (operational_window tstzrange)[cite: 1, 2, 4].
+    - Pooled OCC Inventory: public.service_inventory active with bounds check and FILLFACTOR = 70[cite: 1, 2, 4].
+    - Verified Reviews Engine: public.reviews + trg_prevent_review_abuse (blocks non-completed booking reviews)[cite: 1, 4].
+    - Fast Read Discovery: Materialized view public.mv_provider_scores active with unique index[cite: 1].
+    - AI Embeddings: public.provider_embeddings (1536-dim) with idx_provider_embeddings_hnsw (vector_cosine_ops)[cite: 1, 2, 4].
+    - Telemetry: public.ai_usage_ledger active for token economics and TTFT tracking[cite: 1, 2, 4].
+
+[✔] PHASE 04: OFFLINE GATE OPERATIONS, CRDT & PUSH REGISTRY (MIG-TARGET-008/009)
+    - Ticketing: public.tickets anchoring Ed25519 qr_payload_hash with parent cancellation cascade trigger[cite: 1, 4].
+    - Offline Gate Queue: public.ticket_scans with LWW CRDT conflict resolution on last_modified_at[cite: 1, 4].
+    - Anti-Fraud Logs: public.sync_discrepancy_logs trapping double-spends and time spoofing[cite: 1].
+    - Gate Scanner Auth: public.event_staff_assignments mapping gate staff to booking IDs[cite: 1].
+    - Device Registry: public.device_tokens active for FCM/APNs push notification routing[cite: 1, 4].
+
+[✔] PHASE 05: ZERO-TRUST RLS SECURITY MATRIX & COLUMN PROTECTION (MIG-TARGET-010)
+    - Complete 20/20 table coverage set to rowsecurity = true[cite: 1, 4].
+    - Type-Casting Parity: Reconciled polymorphic subqueries using explicit text casting (::text = ::text)[cite: 1].
+    - Tenant Isolation: Clients isolated via auth.uid(); Providers isolated via O(1) JWT provider_ids claims[cite: 1].
+    - Column-Level Security (CLS): REVOKE UPDATE on base_quote_paisa, platform_fee_paisa, gst_paisa, tds_paisa, total_amount_paisa on bookings from authenticated[cite: 1, 4].
+    - Blackout Tables: Zero public/anon exposure on idempotency_keys, escrow_otps, sync_discrepancy_logs, outbound_refunds[cite: 1].
+
+[✔] PHASE 06: AUTHENTICATION PIPELINE & SESSION HYDRATION
+    - E.164 phone formatting (+91 standard) and OTP input validation on mobile[cite: 2, 3].
+    - GoTrue session persistence, secure storage, and global 401 ERR_TOKEN_EXPIRED silent refresh interceptors[cite: 2, 3].
+    - Cloudflare Turnstile bot protection integration mapped[cite: 1, 3].
+    - Root PopScope hardware exit guard active on Discovery feeds.
+
+[✔] PHASE 07: CLIENT GEOSPATIAL DISCOVERY & OCC PROFILES
+    - PostGIS proximity RPC public.search_nearby_providers centered at Prayagraj (81.8463°E, 25.4358°N)[cite: 1, 2, 3].
+    - Dynamic feed rendering provider categories, pricing badges, capacity tiers, and bio cards[cite: 1, 3].
+    - Provider Profile: Verified badges, capacity tiers, and primary conversion CTA ("Book Now")[cite: 1, 3].
+    - Business Rule: "Stage Audio Setup Excluded" tag enforced on artist profiles[cite: 1].
+
+[✔] PHASE 08: PROVIDER CONSOLE & DYNAMIC SLAs
+    - Hardware-accurate dynamic SLA countdown engine: Standard 24h & Urgent 4h live tickers[cite: 1, 3].
+    - Vendor Action Handshake: Accept / Reject / Counter-Offer state transitions[cite: 1, 3].
+    - Counter-Offer Flow: Proposes delta fees (paisa) without destructively mutating original base quotes[cite: 1, 3].
+
+[✔] PHASE 09: BUILD MY EVENT (BME) MULTI-VENDOR CART & CHECKOUT SAGA
+    - 15-minute soft-reservation hold banner (AWAITING_PAYMENT_HOLD) active[cite: 1, 2, 3].
+    - Authoritative integer Paisa fee breakdown[cite: 1, 2].
+    - Canonical DB checkout RPC public.execute_booking_checkout creating atomic records in event_packages, package_services, and bookings with GiST collision traps[cite: 1, 2].
+    - Booking Success Screen: Green verification state, Order Reference, Booking ID, CONFIRMED status badge, pushReplacement navigation.
+
+[✔] PHASE 10: ADMIN GOVERNANCE & DISPUTE ARBITRATION
+    - Backend RPC public.rpc_admin_arbitrate_dispute with SECURITY DEFINER deployed[cite: 1].
+    - Double-entry asymmetric fractional split-slider (Client = FLOOR, Provider = CEIL) preventing 1-paisa conservation leaks[cite: 1, 2, 3].
+    - 48-hour dispute review, rebuttal oversight, and outbound refund dispatching[cite: 1, 2, 3].
+
+[✔] PHASE 11: CLIENT EVENT DASHBOARD, TIMELINE & ESCROW OTP SETTLEMENT
+    - Event Hub & Timeline screen (/client/event/:id) live on physical hardware[cite: 1, 3].
+    - Day-of-Event Operational Buffer Timeline: Setup -> Soundcheck -> Performance -> Settlement[cite: 1, 3].
+    - Mutual Escrow Release OTP: 6-digit mutual code rendered securely[cite: 1, 3].
+    - Atomic Burn-on-Read Engine: public.rpc_verify_escrow_otp executing atomic DELETE ... RETURNING id[cite: 1, 2].
+    - Dynamic state flip to green "COMPLETED", "Mutual OTP Verified", and "CLEARED & PAID"[cite: 1, 3].
+    - Trigger public.trg_enforce_dispute_window strictly blocking disputes past 48 hours post-event[cite: 1, 2].
+
+[✔] PHASE 12: RSVP TICKETING, GATE SCANNER & CHUNKED BATCH SYNC
+    - Guest List management with E.164 phone formatting and Ed25519 vector QR pass preview[cite: 1, 2, 3].
+    - Gate Access Scanner: Edge-to-edge camera viewfinder (mobile_scanner) with 270x270dp targeting reticle.
+    - Offline local cache validation: Green "ENTRY GRANTED", Red "ALREADY SCANNED", Amber "INVALID PASS"[cite: 3].
+    - Background Batch Sync: Chunk-size 100 uploads to /rest/v1/ticket_scans with dual-timestamp preservation[cite: 1, 2, 3].
+
+[✔] PHASE 13: AUTOMATED ESCROW SWEEPERS & OUTBOUND DISPATCH DAEMONS
+    - Stored Function public.sp_sweep_escrow_auto_release(): 14-day post-event auto-clearance[cite: 1, 2].
+    - Stored Function public.sp_queue_cleared_payouts(): Outbound payout dispatcher with 48h dispute lockout and 72h bank freeze check[cite: 1, 2].
+    - Outbound tracking table public.outbound_refunds active with indexed status pathway[cite: 1, 2].
+    - pg_cron Daemons: cron_escrow_auto_release (Hourly) and cron_queue_payouts (Daily at 00:00 UTC) active[cite: 1, 2].
+
+[✔] PHASE 14: SETTINGS & STATUTORY PRIVACY (DPDP ACT 2023)
+    - Global Settings & Privacy Screen (/settings) fully operational on physical device[cite: 3].
+    - DPDP Right-to-Erasure Stored Procedure public.request_account_deletion() with active liability blocker[cite: 1, 2, 3].
+    - Verified Hardware Result: Active booking legally blocks deletion with modal:
+      "Account Deletion Blocked - Under Indian DPDP Act 2023 and Financial Regulations,
+      you cannot delete an account while holding active booking(s) or escrow funds." (403 ERR_ACTIVE_LIABILITY)[cite: 1, 2, 3].
+
+[✔] PHASE 15: EDGE FUNCTIONS & FINANCIAL APIs DEPLOYMENT
+    - calculate-quote Deno Edge Function: Deployed live (22 kB) on project lfnmedfymmadqjnluqoy[cite: 2].
+      Enforces Tiered Artist Facilitation Ladder (20%, 15%, 10%, 5%), Venue flat 5%, 18% GST, and 1% Sec 194-O TDS[cite: 2].
+    - payment-webhook Deno Edge Function: Deployed live (136 kB) on project lfnmedfymmadqjnluqoy[cite: 2].
+      Enforces 72-hour idempotency gate, HMAC signatures, and executes rpc_confirm_gateway_payment saga resolver[cite: 1, 2, 4].
+    - payout-dispatcher Deno Edge Function: Deployed live (121 kB) on project lfnmedfymmadqjnluqoy[cite: 2].
+      Connects public.outbound_refunds queue to external payment disbursements[cite: 2].
+    - Mobile Client Artifact: build/app/outputs/flutter-apk/app-release.apk (64.5 MB) passing static analysis (0 issues, 0 warnings).
+
+--------------------------------------------------------------------------------
+3. VERIFIED DATABASE & STORAGE TOPOLOGY (SUPABASE POSTGRESQL 15)
+--------------------------------------------------------------------------------
+Active Extensions: postgis, btree_gist, pgvector, pg_cron, uuid-ossp[cite: 1, 3, 4].
+Core Ledgers & Tables Deployed (20/20 RLS Protected)[cite: 1]:
+  - profiles, providers, provider_memberships, provider_categories[cite: 1]
+  - event_packages, package_services, bookings, booking_quote_revisions[cite: 1]
+  - service_inventory, provider_availability, provider_financials[cite: 1]
+  - payments, escrow_ledgers, outbound_refunds[cite: 1]
+  - idempotency_keys, escrow_otps, reviews, mv_provider_scores[cite: 1]
+  - provider_embeddings, ai_usage_ledger, tickets, ticket_scans[cite: 1]
+  - sync_discrepancy_logs, event_staff_assignments, device_tokens[cite: 1]
+
+Active Routines & Stored Procedures Deployed:
+  - public.search_nearby_providers          -> PostGIS proximity provider discovery[cite: 2]
+  - public.execute_booking_checkout         -> Canonical multi-vendor cart checkout[cite: 2]
+  - public.rpc_calculate_cart_quote         -> Authoritative BigInt Paisa quoting[cite: 2]
+  - public.rpc_confirm_gateway_payment      -> Gateway commit & partial compensation saga[cite: 2]
+  - public.rpc_verify_escrow_otp            -> Atomic burn-on-read escrow clearance[cite: 1, 2]
+  - public.rpc_admin_arbitrate_dispute      -> Asymmetric double-entry dispute arbitration[cite: 1, 2]
+  - public.request_account_deletion         -> DPDP right-to-erasure with 403 liability lock[cite: 1, 2]
+  - public.sp_sweep_escrow_auto_release     -> 14-day automated escrow clearance routine[cite: 2]
+  - public.sp_queue_cleared_payouts         -> 72h bank-safe outbound payout queue dispatcher[cite: 2]
+
+--------------------------------------------------------------------------------
+4. CURRENT STATUS & ACTIVE INTEGRATION VERIFICATION
+--------------------------------------------------------------------------------
+- Database Layer: 100% Locked, Migrated, and RLS Hardened[cite: 1].
+- Edge APIs: calculate-quote, payment-webhook, and payout-dispatcher Deployed Live[cite: 2].
+- Client App: Release Candidate (app-release.apk) Verified on Physical Target V2407.
+- Integration Test Harness: scripts/test_pipeline.js (V4 Green Harness) active for live API assertions.
+================================================================================

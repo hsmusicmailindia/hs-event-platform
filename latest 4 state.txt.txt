@@ -1,0 +1,120 @@
+================================================================================
+HS MUSIC EVENT ECOSYSTEM — CURRENT RUNTIME STATE & VERIFICATION LEDGER
+================================================================================
+Generated Date: 2026-09-15
+Status: CANONICAL BASELINE HARDENED / CODEBASE EXPANSION ACTIVE
+Authority: 00_MASTER_CONTROL_FILE (v1.0), STEP_03_PRD (v6.0.0), STEP_04_TRD (v5.0.0),
+           STEP_07 (v10.0.0), STEP_09 (v34.0.0), STEP_10 (v11.0.0), STEP_11 (v29.0.0),
+           STEP_12 (v2.0), STEP_13 (v2.0), STEP_14 (v2.0), STEP_15 (v3.1),
+           STEP_16 (v2.9), STEP_17 (v7.0), STEP_18 (v5.1.0), STEP_21 (v7.0.0),
+           STEP_22 (v5.0.0), STEP_23_RELEASE_CHECKLIST (v5.0.0)
+Architecture Core: ONE EVENT -> MULTIPLE SERVICES -> MULTIPLE PROVIDERS -> MULTIPLE BOOKINGS
+Design System Standard: "Apple Again" (Minimalism, WCAG AA >= 4.5:1, 48x48dp, Semantic Tokens)
+Financial Math Precision: Strict BigInt Paisa Arithmetic (INR * 100, Banker's Rounding)
+================================================================================
+
+--------------------------------------------------------------------------------
+1. CANONICAL ARCHITECTURAL INVARIANTS & CONSTRAINTS
+--------------------------------------------------------------------------------
+- Product Vision: Complete Event & Entertainment Operating System (Pan-India Scalable)[cite: 2].
+- Bifurcated Concurrency Model:
+    * Exact-Slot Single Capacity (Venues, Artists): PostgreSQL tstzrange GiST Exclusion[cite: 2, 3, 4].
+    * Pooled Inventory (Ticketed Gates): Ledger-based Optimistic Concurrency Control (OCC)[cite: 2, 3, 4].
+- Financial Engine Standards:
+    * Absolute Invariant: Gross Inflow = Net Provider Payout + Platform Fee + Statutory Taxes[cite: 2, 3].
+    * Statutory Deductions: 1% TDS under Sec 194-O on Net Base, 18% GST (BPS Snapshots)[cite: 2, 3].
+    * Nodal Escrow Safeguard: 14-Day Automated Sweeper with Strict 48-Hour Post-Event Dispute Window[cite: 2, 3].
+    * Anti-Hijacking Lockout: 72-Hour payout freeze on modifying verified bank/UPI credentials[cite: 2, 3].
+- Security & Tenant Isolation:
+    * Zero-Trust RLS: Complete 20/20 table coverage with explicit Bearer JWT context forwarding[cite: 2, 3].
+    * Service_Role Bypasses: Strictly forbidden on client operations; isolated to backend background workers[cite: 2, 3].
+    * DPDP Act 2023 Compliance: Irreversible PII soft-redaction preserving financial relational keys; 
+      hard blocked during active contracts (403 ERR_ACTIVE_LIABILITY)[cite: 2, 3, 4].
+- Cryptographic Gate Verification:
+    * Ed25519 signature payload validation for offline ticket scanning[cite: 2, 3, 4].
+    * Anti-Double-Spend LWW CRDT reconciliation engine with dual timestamps (device vs. server)[cite: 2, 3, 4].
+
+--------------------------------------------------------------------------------
+2. SYSTEM STATUS & IMPLEMENTATION AUDIT
+--------------------------------------------------------------------------------
+[✔] CORE FOUNDATIONS & IDENTITY
+    - Multi-tenant RBAC mapping via provider_memberships (Owner, Manager, Staff)[cite: 2, 3, 5].
+    - E.164 (+91) standard phone authentication and token refresh interceptors[cite: 2, 3, 4].
+    - Zero-exposure blackout on internal queues, idempotency caches, and cryptographic OTP ledgers[cite: 2, 3].
+
+[✔] CLIENT DISCOVERY & PROFILE ARCHITECTURE
+    - Geospatial proximity engine via PostGIS (geography POINT, SRID 4326) centered at Prayagraj[cite: 2, 3].
+    - Multi-Category Visual Filters: Singers & Bands, Sound & Light, Venues, Photography, Wedding Decor[cite: 2].
+    - Immersive Full-Bleed Hero Section (70% Viewport Height) with multi-stop dark gradient scrim[cite: 4].
+    - Integrated Glassmorphic Panels: Bio, YouTube Video Samples, Client Verified Reviews, and Technical Riders.
+    - Crucial Business Rule Enforced: "Stage Audio Setup Excluded" explicitly badge-tagged on artist profiles[cite: 2, 4].
+
+[✔] MULTI-VENDOR CART (BME) & ESCROW SETTLEMENT
+    - Build My Event (BME) package aggregator supporting multi-vendor line items[cite: 2, 3].
+    - 15-Minute Soft-Reservation Countdown Banner (AWAITING_PAYMENT_HOLD)[cite: 2, 3, 4].
+    - Authoritative integer Paisa fee breakdown (Base + 18% GST + Platform Fee Guarantee)[cite: 2, 3].
+    - Event Hub Timeline: Operational buffer stages (Setup -> Soundcheck -> Performance -> Settlement)[cite: 2, 3, 4].
+    - Mutual Escrow Release OTP: 6-digit mutual code with atomic burn-on-read execution[cite: 2, 3].
+    - State Machine Transitions: Dynamically flips to COMPLETED and CLEARED & PAID upon OTP burn[cite: 2, 3].
+
+[✔] GUEST TICKETING & GATE SCANNER OPERATIONS
+    - RSVP Guest List management with E.164 phone validation[cite: 2, 4].
+    - Vector QR Code generation embedding Ed25519 cryptographic payload signatures[cite: 2, 3, 4].
+    - Gate Access Scanner: Edge-to-edge camera viewfinder (mobile_scanner with BoxFit.cover)[cite: 2, 4].
+    - Centered 270x270dp Targeting Reticle Frame and Centered Cloud Batch Sync Pill[cite: 4].
+    - Offline local cache validation trapping duplicate check-ins (Instant ALREADY SCANNED alert)[cite: 2, 4].
+    - Background Chunked Batch Sync (chunk-size 100) uploading to /rest/v1/ticket_scans.
+
+[✔] PROVIDER CONSOLE & VENDOR OPERATIONS
+    - Hardware-accurate dynamic SLA countdown timers: Standard 24h & Urgent 4h live tickers[cite: 2, 4].
+    - Three-Way Vendor Action Handshake: Accept (GiST lock), Reject (Restock), and Counter-Offer[cite: 2, 3, 4].
+    - Counter-Offer Modal: Proposes delta fees (paisa) for outstation travel and riders without mutating base quotes[cite: 2, 3, 4].
+
+[✔] GLOBAL NAVIGATION INTEGRATION
+    - Ecosystem Direct Navigator modal (Icons.apps_rounded) providing unified instant access across:
+      BME Cart, Event Hub Timeline, Guest Tickets, Gate Access Scanner, and Provider Operations Console[cite: 4].
+
+--------------------------------------------------------------------------------
+3. VERIFIED DATABASE & BACKEND SCHEMA TRUTH (SUPABASE POSTGRESQL 15)
+--------------------------------------------------------------------------------
+Active Extensions: postgis, btree_gist, pgvector, pg_cron, uuid-ossp[cite: 2, 3].
+Primary Ledger Tables Deployed:
+  - profiles, providers, provider_memberships, provider_categories[cite: 2, 3, 5]
+  - event_packages, package_services, bookings, booking_quote_revisions[cite: 2, 3]
+  - service_inventory, provider_availability, provider_financials[cite: 2, 3]
+  - payments (Strict XOR check: (package_id IS NOT NULL) ^ (booking_id IS NOT NULL))[cite: 2, 3]
+  - escrow_ledgers (Double-entry tracking: final_payout_paisa, final_refund_paisa, platform_revenue_paisa)[cite: 2, 3]
+  - escrow_otps, idempotency_keys (72h TTL), async_jobs, ai_jobs[cite: 2, 3]
+  - tickets, ticket_scans (LWW CRDT conflict resolution via last_modified_at), reviews[cite: 2, 3]
+
+Active Stored Procedures & Engine RPCs:
+  - public.search_nearby_providers       -> PostGIS geospatial proximity discovery[cite: 2, 3]
+  - public.execute_booking_checkout      -> Canonical multi-vendor transaction execution[cite: 2, 3]
+  - public.verify_escrow_completion_otp  -> Atomic burn-on-read escrow clearance[cite: 2, 3]
+  - public.request_account_deletion      -> DPDP right-to-erasure with 403 liability lock[cite: 2, 3]
+  - public.rpc_calculate_cart_quote      -> Authoritative integer Paisa fee engine[cite: 2, 3]
+  - public.rpc_admin_arbitrate_dispute   -> Double-entry split-slider settlement[cite: 2, 3]
+  - public.sp_sweep_escrow_auto_release  -> 14-day automated escrow clearance daemon[cite: 2, 3]
+  - public.sp_queue_cleared_payouts      -> Outbound payout queue dispatcher (72h freeze check)[cite: 2, 3]
+
+--------------------------------------------------------------------------------
+4. CODEBASE COMPILATION & STATIC ANALYSIS HEALTH
+--------------------------------------------------------------------------------
+- Toolchain: Flutter SDK / Dart Compiler
+- Target Application: client_app
+- Static Analysis Audit: PASSING (flutter analyze: 0 issues, 0 warnings)[cite: 4]
+- Build Target: Android Production Release Candidate (app-release.apk)[cite: 4]
+- Hardware Targets Verified: Vivo V2407, Samsung SM-A135F (Android 14 Physical Targets)[cite: 4]
+
+--------------------------------------------------------------------------------
+5. REMAINING ARCHITECTURAL MILESTONES (PLATFORM COMPLETION ROADMAP)
+--------------------------------------------------------------------------------
+1. Admin Governance & Dispute Arbitration UI Panel (/admin/disputes):
+   - Admin Split-Slider double-entry settlement engine (rpc_admin_arbitrate_dispute)[cite: 2, 3].
+   - 48-Hour dispute review, rebuttal oversight, and outbound refund execution[cite: 2, 3].
+2. Automated External Payout Engine (Nodal Bank Sweeps):
+   - Deno Edge Function bridge connecting cleared escrow ledgers to RazorpayX / Stripe Connect[cite: 2, 3].
+   - Outbound disbursement worker with 72-hour bank account modification freeze enforcement[cite: 2, 3].
+3. Omnichannel Calendar Sync:
+   - Implementation of EXTERNAL_MANUAL_BLOCK tracking for off-platform bookings[cite: 3, 5].
+================================================================================
